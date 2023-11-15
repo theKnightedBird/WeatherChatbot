@@ -8,17 +8,16 @@ public class Main {
     static final String key = "9affefXFTg46cZyHejEPCMbOzXS7jXn0";
 
     public static void main(String[] args) throws IOException {
-        Runtime.getRuntime().exec("System.out.println(\"hi\");");
         System.out.println("what you want");
         respond();
         System.out.println("what else you want");
         respond();
-        Math.random();
     }
 
     public static void respond() throws IOException {
         Scanner scanner = new Scanner(System.in);
-        String prompt = scanner.nextLine();
+        String prompt = scanner.nextLine().toLowerCase;
+        while (!prompt.equals("exit")) {
         if (prompt.contains("weather")) {
             try{
                 System.out.println("what city");
@@ -27,12 +26,18 @@ public class Main {
             } catch (Exception e) {
                 System.out.println("that isnt a real city moron");
             }
-        } else if (prompt.contains("random(")){
+        } else if (prompt.substring(0,7).equals("random(") && prompt.contains(",") && prompt.charAt(prompt.length() - 1) == ')'){
             try {
-
-            } catch (Exception e) {}
+                int comma = prompt.indexOf(",");
+                int fin = prompt.indexOf(")");
+                int start = Integer.paseint(prompt.substring(7,comma));
+                int end = Integer.paseint(prompt.substring(comma+1,fin));
+                System.out.println((int) start + Math.random() * (end - start + 1));
+            } catch (Exception e) {
+                System.out.println("you stupid idiot input random right moron :(")
+            }
         }
-
+        }
     }
     public static String readFromLocation(String address, String property) throws IOException {
         address = address.replace(" ", "+");
