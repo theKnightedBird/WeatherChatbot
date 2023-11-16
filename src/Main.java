@@ -8,16 +8,18 @@ public class Main {
     static final String key = "9affefXFTg46cZyHejEPCMbOzXS7jXn0";
 
     public static void main(String[] args) throws IOException {
-        System.out.println("what you want");
-        respond();
-        System.out.println("what else you want");
-        respond();
-    }
-
-    public static void respond() throws IOException {
         Scanner scanner = new Scanner(System.in);
-        String prompt = scanner.nextLine().toLowerCase;
-        while (!prompt.equals("exit")) {
+        String prompt = "";
+        while (prompt!="exit"){
+            System.out.println("what you want");
+            prompt = cleanup(scanner.nextLine());
+            respond(prompt,scanner);
+            
+        }
+        }
+        
+
+    public static void respond(String prompt,Scanner scanner) throws IOException {
         if (prompt.contains("weather")) {
             try{
                 System.out.println("what city");
@@ -26,18 +28,16 @@ public class Main {
             } catch (Exception e) {
                 System.out.println("that isnt a real city moron");
             }
-        } else if (prompt.substring(0,7).equals("random(") && prompt.contains(",") && prompt.charAt(prompt.length() - 1) == ')'){
+        } else if (prompt.length()>8 && prompt.substring(0,7).equals("random(") && prompt.contains(",") && prompt.charAt(prompt.length() - 1) == ')'){
             try {
-                int comma = prompt.indexOf(",");
-                int fin = prompt.indexOf(")");
-                int start = Integer.paseint(prompt.substring(7,comma));
-                int end = Integer.paseint(prompt.substring(comma+1,fin));
-                System.out.println((int) start + Math.random() * (end - start + 1));
+                random(prompt);
             } catch (Exception e) {
-                System.out.println("you stupid idiot input random right moron :(")
+                System.out.println("you stupid idiot input random right moron");
             }
+        } else if (prompt.equals("time")) {
+            
         }
-        }
+        
     }
     public static String readFromLocation(String address, String property) throws IOException {
         address = address.replace(" ", "+");
@@ -95,5 +95,21 @@ public class Main {
             outputLine = reader.readLine();
         } while (outputLine != null);
         return output;
+    }
+
+    public static void random(String prompt){
+        int comma = prompt.indexOf(",");
+        int fin = prompt.indexOf(")");
+        int start = Integer.parseInt(prompt.substring(7,comma));
+        int end = Integer.parseInt(prompt.substring(comma+1,fin));
+        System.out.println((int) (start + Math.random() * (end - start + 1)));
+    }
+
+    public static String cleanup(String prompt){
+        return prompt.toLowerCase().trim();
+    }
+
+    public static void time(String prompt) {
+        
     }
 }
