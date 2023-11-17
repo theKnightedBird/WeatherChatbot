@@ -7,39 +7,63 @@ import java.util.Scanner;
 public class Main {
     static final String key = "9affefXFTg46cZyHejEPCMbOzXS7jXn0";
 
-    public static void main(String[] args) throws IOException {
-        Scanner scanner = new Scanner(System.in);
-        String prompt = "";
-        while (prompt!="exit"){
-            System.out.println("what you want");
-            prompt = cleanup(scanner.nextLine());
-            respond(prompt,scanner);
-            
+    public static void main(String[] args) {
+        System.out.println("what you want");
+        while (true) {
+            try {
+                respond();
+                System.out.println("what else you want?");
+            } catch (Exception e) {
+                break;
+            }
         }
-        }
-        
+    }
 
-    public static void respond(String prompt,Scanner scanner) throws IOException {
-        if (prompt.contains("weather")) {
+    public static void respond() throws IOException {
+        Scanner scanner = new Scanner(System.in);
+        String prompt = scanner.nextLine();
+        String promptSanitized = prompt.toLowerCase().replaceAll("([^\\w\\s])+", "").trim();
+        String response = "";
+        if (promptSanitized.contains("weather")) {
             try{
                 System.out.println("what city");
                 String city = scanner.nextLine();
-                System.out.println(readFromLocation(city, "temperature"));
+                response = readFromLocation(city);
             } catch (Exception e) {
                 System.out.println("that isnt a real city moron");
             }
-        } else if (prompt.length()>8 && prompt.substring(0,7).equals("random(") && prompt.contains(",") && prompt.charAt(prompt.length() - 1) == ')'){
+        } else if (promptSanitized.startsWith("random(") && promptSanitized.contains(",") && promptSanitized.endsWith(")")){
             try {
-                random(prompt);
+                int comma = promptSanitized.indexOf(",");
+                int fin = promptSanitized.indexOf(")");
+                int start = Integer.parseInt(promptSanitized.substring(7,comma));
+                int end = Integer.parseInt(promptSanitized.substring(comma+1,fin));
+                response = Integer.toString((int)( start + Math.random() * (end - start + 1)));
             } catch (Exception e) {
-                System.out.println("you stupid idiot input random right moron");
+                response = "you stupid idiot input random right moron";
             }
-        } else if (prompt.equals("time")) {
-            
+        } else if (promptSanitized.equals("stop")) {
+            throw new IOException("Escape real");
+        } else if (promptSanitized.contains(" time ") || promptSanitized.startsWith("time ") || promptSanitized.endsWith(" time") || promptSanitized.equals("time")) {
+            response = "time is relative";
+        } else {
+            String responses[] = {
+                    "i don't know what youre talking about",
+                    "i wasnt there, and if i was, i was asleep",
+                    "i saw nothin'",
+                    "no hablo ingles",
+                    "i aint no snitch",
+                    "i aint talkin to no feds",
+                    "i aint answering any questions and i wanna lawyer",
+                    "i plead the fifth",
+                    "what"
+            };
+            response = responses[(int)(Math.random() * responses.length)];
         }
-        
+        if (!response.equals("time is relative") && prompt.contains("?")) { response += "?"; }
+        System.out.println(response);
     }
-    public static String readFromLocation(String address, String property) throws IOException {
+    public static String readFromLocation(String address) throws IOException {
         address = address.replace(" ", "+");
         String latLong = readFromURL(
                 "https://www.mapquestapi.com/geocoding/v1/address?key=" + key + "&location="+ address,
@@ -73,6 +97,7 @@ public class Main {
         connection.setRequestMethod("GET");
         connection.setRequestProperty("User-Agent", "Weather chatbot project for school, jefferydoudou@gmail.com");
         int status = connection.getResponseCode();
+        if (status > 299) { return " get better internet"; }
         BufferedReader input = new BufferedReader( new InputStreamReader(connection.getInputStream()) );
         String output = parseJson(input, property);
         connection.getInputStream().close();
@@ -95,21 +120,5 @@ public class Main {
             outputLine = reader.readLine();
         } while (outputLine != null);
         return output;
-    }
-
-    public static void random(String prompt){
-        int comma = prompt.indexOf(",");
-        int fin = prompt.indexOf(")");
-        int start = Integer.parseInt(prompt.substring(7,comma));
-        int end = Integer.parseInt(prompt.substring(comma+1,fin));
-        System.out.println((int) (start + Math.random() * (end - start + 1)));
-    }
-
-    public static String cleanup(String prompt){
-        return prompt.toLowerCase().trim();
-    }
-
-    public static void time(String prompt) {
-        
     }
 }
