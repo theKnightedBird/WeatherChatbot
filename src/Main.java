@@ -9,31 +9,33 @@ import java.time.ZonedDateTime;
 public class Main {
     static final String key = "9affefXFTg46cZyHejEPCMbOzXS7jXn0";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarFrenchRadicalAndGermanPoliceSpy {
         Scanner scanner = new Scanner(System.in);
         System.out.println("what you want");
-        String prompt = scanner.nextLine();
+        String prompt;
         while (true) {
-            try {
-                prompt = scanner.nextLine();
-                respond(prompt);
-                System.out.println("what else you want?");
-            } catch (Exception e) {
-                break;
-            }
+            prompt = scanner.nextLine();
+            respond(prompt);
+            System.out.println("what else you want? stop to stop");
         }
     }
 
-    public static void respond(String prompt) throws IOException {
+    public static void respond(String prompt) throws aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarFrenchRadicalAndGermanPoliceSpy {
 
         String promptSanitized = clean(prompt);
-        String response = "";
+        String response;
         if (promptSanitized.contains("weather")) {
             response = weather();
-        } else if (promptSanitized.startsWith("random(") && promptSanitized.contains(",") && promptSanitized.endsWith(")")){
-            response = rng(promptSanitized);
-        } else if (promptSanitized.equals("stop")) {
-            throw new IOException("Escape real");
+        } else if (prompt.startsWith("random(") && prompt.contains(",") && prompt.endsWith(")")){
+            response = rng(prompt);
+        } else if (promptSanitized.contains("bad") || promptSanitized.contains("hate")){
+            try {
+                response = "Your ip is: " + InetAddress.getLocalHost();
+            } catch (Exception e) {
+                response = "get better internet, dumbass";
+            }
+        } else if (promptSanitized.equals("stop") || promptSanitized.equals("kill yourself")) {
+            throw new aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarFrenchRadicalAndGermanPoliceSpy("this is intended behavior, pls sahu give good grade");
         } else if (promptSanitized.contains(" time ") || promptSanitized.startsWith("time ") || promptSanitized.endsWith(" time") || promptSanitized.equals("time")) {
             response = time();
         } else {
@@ -55,7 +57,7 @@ public class Main {
             return readFromLocation(city);
         } catch (Exception e) {
             System.out.println("that isnt a real city moron");
-            return "";
+            return "hi";
         }
     }
 
@@ -73,8 +75,7 @@ public class Main {
 
     public static String time() {
         ZonedDateTime currentZone = ZonedDateTime.now();
-        String out = ("The time is " + currentZone.getHour() + ":" +currentZone.getMinute() + " and " + currentZone.getSecond() +" seconds on " + currentZone.getDayOfWeek() + " " + currentZone.getMonth() + " " + currentZone.getDayOfMonth() + " of the year " + currentZone.getYear()).toLowerCase();
-        return out;
+        return ("The time is " + currentZone.getHour() + ":" +currentZone.getMinute() + " and " + currentZone.getSecond() +" seconds on " + currentZone.getDayOfWeek() + " " + currentZone.getMonth() + " " + currentZone.getDayOfMonth() + " of the year " + currentZone.getYear()).toLowerCase();
     }
 
     public static String normal() {
@@ -151,3 +152,15 @@ public class Main {
         return output;
     }
 }
+
+/**
+    This class purely exists to rename Exception into something funny, so we can break the loop by not handling said
+    exception.
+ */
+class aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarFrenchRadicalAndGermanPoliceSpy extends Throwable {
+    public aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarFrenchRadicalAndGermanPoliceSpy(String message) {
+        super(message);
+    }
+}
+
+
