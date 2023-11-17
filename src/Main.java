@@ -1,3 +1,4 @@
+//Import statements
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -6,13 +7,17 @@ import java.util.Scanner;
 import java.time.ZonedDateTime;
 
 
+//Main class
 public class Main {
+    //API key (ignore)
     static final String key = "9affefXFTg46cZyHejEPCMbOzXS7jXn0";
 
-    public static void main(String[] args) throws aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarFrenchRadicalAndGermanPoliceSpy {
+    // Main method
+    public static void main(String[] args) throws aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarMetternichAndGuizotFrenchRadicalAndGermanPoliceSpy {
         Scanner scanner = new Scanner(System.in);
         System.out.println("what you want");
         String prompt;
+        // Main loop
         while (true) {
             prompt = scanner.nextLine();
             respond(prompt);
@@ -20,8 +25,8 @@ public class Main {
         }
     }
 
-    public static void respond(String prompt) throws aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarFrenchRadicalAndGermanPoliceSpy {
-
+    // respond() handles the prompt given and responds accordingly
+    public static void respond(String prompt) throws aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarMetternichAndGuizotFrenchRadicalAndGermanPoliceSpy {
         String promptSanitized = clean(prompt);
         String response;
         if (promptSanitized.contains("weather")) {
@@ -31,7 +36,7 @@ public class Main {
         } else if (promptSanitized.contains("bad") || promptSanitized.contains("hate") || promptSanitized.contains("stupid")){
             response = doxx();
         } else if (promptSanitized.equals("stop") || promptSanitized.equals("kill yourself")) {
-            throw new aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarFrenchRadicalAndGermanPoliceSpy("this is intended behavior, pls sahu give good grade");
+            throw new aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarMetternichAndGuizotFrenchRadicalAndGermanPoliceSpy("this is intended behavior, pls sahu give good grade");
         } else if (promptSanitized.contains(" time ") || promptSanitized.startsWith("time ") || promptSanitized.endsWith(" time") || promptSanitized.equals("time")) {
             response = time();
         } else {
@@ -166,8 +171,8 @@ public class Main {
     This class purely exists to rename Exception into something funny, so we can break the loop by not handling said
     exception.
  */
-class aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarFrenchRadicalAndGermanPoliceSpy extends Throwable {
-    public aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarFrenchRadicalAndGermanPoliceSpy(String message) {
+class aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarMetternichAndGuizotFrenchRadicalAndGermanPoliceSpy extends Throwable {
+    public aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarMetternichAndGuizotFrenchRadicalAndGermanPoliceSpy(String message) {
         super(message);
     }
 }
