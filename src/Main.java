@@ -3,15 +3,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
 import java.util.Scanner;
+import java.time.ZonedDateTime;
+
 
 public class Main {
     static final String key = "9affefXFTg46cZyHejEPCMbOzXS7jXn0";
 
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         System.out.println("what you want");
+        String prompt = scanner.nextLine();
         while (true) {
             try {
-                respond();
+                prompt = scanner.nextLine();
+                respond(prompt);
                 System.out.println("what else you want?");
             } catch (Exception e) {
                 break;
@@ -19,50 +24,74 @@ public class Main {
         }
     }
 
-    public static void respond() throws IOException {
-        Scanner scanner = new Scanner(System.in);
-        String prompt = scanner.nextLine();
-        String promptSanitized = prompt.toLowerCase().replaceAll("([^\\w\\s])+", "").trim();
+    public static void respond(String prompt) throws IOException {
+
+        String promptSanitized = clean(prompt);
         String response = "";
         if (promptSanitized.contains("weather")) {
-            try{
-                System.out.println("what city");
-                String city = scanner.nextLine();
-                response = readFromLocation(city);
-            } catch (Exception e) {
-                System.out.println("that isnt a real city moron");
-            }
+            response = weather();
         } else if (promptSanitized.startsWith("random(") && promptSanitized.contains(",") && promptSanitized.endsWith(")")){
-            try {
-                int comma = promptSanitized.indexOf(",");
-                int fin = promptSanitized.indexOf(")");
-                int start = Integer.parseInt(promptSanitized.substring(7,comma));
-                int end = Integer.parseInt(promptSanitized.substring(comma+1,fin));
-                response = Integer.toString((int)( start + Math.random() * (end - start + 1)));
-            } catch (Exception e) {
-                response = "you stupid idiot input random right moron";
-            }
+            response = rng(promptSanitized);
         } else if (promptSanitized.equals("stop")) {
             throw new IOException("Escape real");
         } else if (promptSanitized.contains(" time ") || promptSanitized.startsWith("time ") || promptSanitized.endsWith(" time") || promptSanitized.equals("time")) {
-            response = "time is relative";
+            response = time();
         } else {
-            String responses[] = {
-                    "i don't know what youre talking about",
-                    "i wasnt there, and if i was, i was asleep",
-                    "i saw nothin'",
-                    "no hablo ingles",
-                    "i aint no snitch",
-                    "i aint talkin to no feds",
-                    "i aint answering any questions and i wanna lawyer",
-                    "i plead the fifth",
-                    "what"
-            };
-            response = responses[(int)(Math.random() * responses.length)];
+            response = normal();
         }
         if (!response.equals("time is relative") && prompt.contains("?")) { response += "?"; }
         System.out.println(response);
     }
+
+    public static String clean(String prompt) {
+        return prompt.toLowerCase().replaceAll("([^\\w\\s])+", "").trim();
+    }
+
+    public static String weather() {
+        Scanner temp = new Scanner(System.in);
+        try{
+            System.out.println("what city");
+            String city = temp.nextLine();
+            return readFromLocation(city);
+        } catch (Exception e) {
+            System.out.println("that isnt a real city moron");
+            return "";
+        }
+    }
+
+    public static String rng(String prompt) {
+        try {
+            int comma = prompt.indexOf(",");
+            int fin = prompt.indexOf(")");
+            int start = Integer.parseInt(prompt.substring(7,comma));
+            int end = Integer.parseInt(prompt.substring(comma+1,fin));
+            return Integer.toString((int)( start + Math.random() * (end - start + 1)));
+        } catch (Exception e) {
+            return "you stupid idiot input random right moron";
+        }
+    }
+
+    public static String time() {
+        ZonedDateTime currentZone = ZonedDateTime.now();
+        String out = ("The time is " + currentZone.getHour() + ":" +currentZone.getMinute() + " and " + currentZone.getSecond() +" seconds on " + currentZone.getDayOfWeek() + " " + currentZone.getMonth() + " " + currentZone.getDayOfMonth() + " of the year " + currentZone.getYear()).toLowerCase();
+        return out;
+    }
+
+    public static String normal() {
+        String responses[] = {
+                "i don't know what youre talking about",
+                "i wasnt there, and if i was, i was asleep",
+                "i saw nothin'",
+                "no hablo ingles",
+                "i aint no snitch",
+                "i aint talkin to no feds",
+                "i aint answering any questions and i wanna lawyer",
+                "i plead the fifth",
+                "what"
+        };
+        return responses[(int)(Math.random() * responses.length)];
+    }
+
     public static String readFromLocation(String address) throws IOException {
         address = address.replace(" ", "+");
         String latLong = readFromURL(
