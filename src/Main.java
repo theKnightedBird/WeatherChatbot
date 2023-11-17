@@ -25,7 +25,8 @@ public class Main {
         }
     }
 
-    // respond() handles the prompt given and responds accordingly
+    // respond() handles the prompt given and responds accordingly. Starts by cleaning the prompt to make it easier to work with,
+    // then checks if the prompt matches weather, random, time, some other stuff, and responds to them using methods written below. Ends by printing the generated response.
     public static void respond(String prompt) throws aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarMetternichAndGuizotFrenchRadicalAndGermanPoliceSpy {
         String promptSanitized = clean(prompt);
         String response;
@@ -45,11 +46,14 @@ public class Main {
         if (!response.equals("time is relative") && prompt.contains("?")) { response += "?"; }
         System.out.println(response);
     }
-
+    
+    // clean() takes the prompt as a String, and returns the same String but lowercase, without leading or trailing spaces, and with commas removed.
     public static String clean(String prompt) {
-        return prompt.toLowerCase().replaceAll("([^\\w\\s])+", "").trim();
+        return prompt.toLowerCase().replaceAll("([^\\w\\s])+", " ").trim();
     }
 
+    // weather() prompts for and gets a city, which is fed into the weather API. The information from the API is then returned as a String, or if the city is invalid
+    // the error is caught and handled.
     public static String weather() {
         Scanner temp = new Scanner(System.in);
         try{
@@ -61,6 +65,8 @@ public class Main {
         }
     }
 
+    // rng() takes the prompt, extracts from it the start and end values, converts to ints, and uses Math.random() to generate the response before returning it.
+    // Any invalid input is caught and handled.
     public static String rng(String prompt) {
         try {
             int comma = prompt.indexOf(",");
@@ -73,6 +79,7 @@ public class Main {
         }
     }
 
+    // time() uses java.time to get the local date and time, before formatting it and returning it as a String.
     public static String time() {
         ZonedDateTime currentZone = ZonedDateTime.now();
         return ("the time is " + currentZone.getHour()
@@ -84,6 +91,7 @@ public class Main {
                 + " of the year " + currentZone.getYear()).toLowerCase();
     }
 
+    // doxx() uses black magic to get the user's IP adress and format and return it. In case that breaks the exception is handled.
     public static String doxx() {
         try {
             String ip = String.valueOf(InetAddress.getLocalHost());
@@ -94,6 +102,7 @@ public class Main {
         }
     }
 
+    // normal() chooses a random response from a predetermined list and returns it.
     public static String normal() {
         String responses[] = {
                 "i don't know what youre talking about",
@@ -109,6 +118,7 @@ public class Main {
         return responses[(int)(Math.random() * responses.length)];
     }
 
+    // readFromLocation uses more black magic to connect with the weather and map APIs, and using the location passed in determine, format, and return the weather.
     public static String readFromLocation(String address) throws IOException {
         address = address.replace(" ", "+");
         String latLong = readFromURL(
@@ -123,12 +133,9 @@ public class Main {
                 latLong.indexOf("lng:") + 4,
                 latLong.indexOf("}")
         );
-        //System.out.println(lat +  "end         " + lng + "end");
         String URI = "https://api.weather.gov/points/" + lat + "," + lng;
-        //System.out.println(URI);
         String nextURL = readFromURL(URI, "forecast");
         nextURL = nextURL.replace(" ", "");
-        //System.out.println(nextURL);
         String forecast = readFromURL(nextURL, "detailedForecast");
         forecast = forecast.toLowerCase();
         forecast = forecast.replace("%", " percent").replace(".", ",");
@@ -137,6 +144,7 @@ public class Main {
         return forecast;
     }
 
+    // readFromURL() connects with the internet and gets information from the website passed in.
     public static String readFromURL(String uri, String property) throws IOException {
         URL url = new URL(uri);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -148,6 +156,7 @@ public class Main {
         return output;
     }
 
+    // parseJson() takes the information provided by the API (in the form of a JSON) and reads, formats, and returns it.
     public static String parseJson(BufferedReader reader, String property) throws IOException {
         String outputLine = "";
         String output = null;
@@ -169,7 +178,7 @@ public class Main {
 
 /**
     This class purely exists to rename Exception into something funny, so we can break the loop by not handling said
-    exception.
+    exception. 
  */
 class aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarMetternichAndGuizotFrenchRadicalAndGermanPoliceSpy extends Throwable {
     public aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarMetternichAndGuizotFrenchRadicalAndGermanPoliceSpy(String message) {
