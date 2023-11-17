@@ -28,12 +28,8 @@ public class Main {
             response = weather();
         } else if (prompt.startsWith("random(") && prompt.contains(",") && prompt.endsWith(")")){
             response = rng(prompt);
-        } else if (promptSanitized.contains("bad") || promptSanitized.contains("hate")){
-            try {
-                response = "Your ip is: " + InetAddress.getLocalHost();
-            } catch (Exception e) {
-                response = "get better internet, dumbass";
-            }
+        } else if (promptSanitized.contains("bad") || promptSanitized.contains("hate") || promptSanitized.contains("stupid")){
+            response = doxx();
         } else if (promptSanitized.equals("stop") || promptSanitized.equals("kill yourself")) {
             throw new aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarFrenchRadicalAndGermanPoliceSpy("this is intended behavior, pls sahu give good grade");
         } else if (promptSanitized.contains(" time ") || promptSanitized.startsWith("time ") || promptSanitized.endsWith(" time") || promptSanitized.equals("time")) {
@@ -56,8 +52,7 @@ public class Main {
             String city = temp.nextLine();
             return readFromLocation(city);
         } catch (Exception e) {
-            System.out.println("that isnt a real city moron");
-            return "hi";
+            return "that isnt a real city moron";
         }
     }
 
@@ -75,7 +70,23 @@ public class Main {
 
     public static String time() {
         ZonedDateTime currentZone = ZonedDateTime.now();
-        return ("The time is " + currentZone.getHour() + ":" +currentZone.getMinute() + " and " + currentZone.getSecond() +" seconds on " + currentZone.getDayOfWeek() + " " + currentZone.getMonth() + " " + currentZone.getDayOfMonth() + " of the year " + currentZone.getYear()).toLowerCase();
+        return ("the time is " + currentZone.getHour()
+                + ":" +currentZone.getMinute()
+                + " and " + currentZone.getSecond()
+                + " seconds on " + currentZone.getDayOfWeek()
+                + " " + currentZone.getMonth()
+                + " " + currentZone.getDayOfMonth()
+                + " of the year " + currentZone.getYear()).toLowerCase();
+    }
+
+    public static String doxx() {
+        try {
+            String ip = String.valueOf(InetAddress.getLocalHost());
+            ip = ip.substring(ip.indexOf("/") + 1);
+            return "your ip is " + ip;
+        } catch (Exception e) {
+            return "get better internet, dumbass";
+        }
     }
 
     public static String normal() {
@@ -126,8 +137,6 @@ public class Main {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("User-Agent", "Weather chatbot project for school, jefferydoudou@gmail.com");
-        int status = connection.getResponseCode();
-        if (status > 299) { return " get better internet"; }
         BufferedReader input = new BufferedReader( new InputStreamReader(connection.getInputStream()) );
         String output = parseJson(input, property);
         connection.getInputStream().close();
