@@ -12,13 +12,11 @@ public class Main {
     // Response tracks the response to make life easier.
     public static String response = "";
     // ignore weather (does weather in the background)
-    public static Runnable weather = new Runnable() {
-        public void run(){
-            try {
-                response = readFromLocation(response);
-            } catch (Exception e) {
-                response = "that isnt a real city moron";
-            }
+    public static Runnable weather = () -> {
+        try {
+            response = readFromLocation(response);
+        } catch (Exception e) {
+            response = "that isnt a real city moron";
         }
     };
 
@@ -123,7 +121,7 @@ public class Main {
 
     // normal() chooses a random response from a predetermined list and returns it.
     public static String normal() {
-        String responses[] = {
+        String[] responses = {
                 "i don't know what youre talking about",
                 "i wasnt there, and if i was, i was asleep",
                 "i saw nothin'",
