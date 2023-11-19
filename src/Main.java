@@ -5,15 +5,28 @@ import java.io.InputStreamReader;
 import java.net.*;
 import java.util.Scanner;
 import java.time.ZonedDateTime;
-
+import java.util.concurrent.*;
 
 //Main class
 public class Main {
+    // Response tracks the response to make life easier.
+    public static String response = "";
+    // ignore weather (does weather in the background)
+    public static Runnable weather = new Runnable() {
+        public void run(){
+            try {
+                response = readFromLocation(response);
+            } catch (Exception e) {
+                response = "that isnt a real city moron";
+            }
+        }
+    };
+
     //API key (ignore)
     static final String key = "9affefXFTg46cZyHejEPCMbOzXS7jXn0";
 
     // Main method
-    public static void main(String[] args) throws aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarMetternichAndGuizotFrenchRadicalAndGermanPoliceSpy {
+    public static void main(String[] args) throws aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarMetternichAndGuizotFrenchRadicalAndGermanPoliceSpy, InterruptedException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("what you want");
         String prompt;
@@ -21,17 +34,15 @@ public class Main {
         while (true) {
             prompt = scanner.nextLine();
             respond(prompt);
-            System.out.println("what else you want? stop to stop");
         }
     }
 
     // respond() handles the prompt given and responds accordingly. Starts by cleaning the prompt to make it easier to work with,
     // then checks if the prompt matches weather, random, time, some other stuff, and responds to them using methods written below. Ends by printing the generated response.
-    public static void respond(String prompt) throws aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarMetternichAndGuizotFrenchRadicalAndGermanPoliceSpy {
+    public static void respond(String prompt) throws aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarMetternichAndGuizotFrenchRadicalAndGermanPoliceSpy, InterruptedException {
         String promptSanitized = clean(prompt);
-        String response;
         if (promptSanitized.contains("weather")) {
-            response = weather();
+            weather();
         } else if (prompt.startsWith("random(") && prompt.contains(",") && prompt.endsWith(")")){
             response = rng(prompt);
         } else if (promptSanitized.contains("bad") || promptSanitized.contains("hate") || promptSanitized.contains("stupid")){
@@ -45,6 +56,7 @@ public class Main {
         }
         if (!response.equals("time is relative") && prompt.contains("?")) { response += "?"; }
         System.out.println(response);
+        System.out.println("what else you want? stop to stop");
     }
     
     // clean() takes the prompt as a String, and returns the same String but lowercase, without leading or trailing spaces, and with commas removed.
@@ -52,16 +64,23 @@ public class Main {
         return prompt.toLowerCase().replaceAll("([^\\w\\s])+", " ").trim();
     }
 
-    // weather() prompts for and gets a city, which is fed into the weather API. The information from the API is then returned as a String, or if the city is invalid
+    // weather() prompts for and gets a city, which is fed into the weather API (through the weather thread).
+    // While information is being retrieved in the weather thread, tracks time taken and informs the user.
+    // The information from the API is then returned as a String, or if the city is invalid
     // the error is caught and handled.
-    public static String weather() {
+
+    public static void weather() throws InterruptedException {
         Scanner temp = new Scanner(System.in);
-        try{
-            System.out.println("what city");
-            String city = temp.nextLine();
-            return readFromLocation(city);
-        } catch (Exception e) {
-            return "that isnt a real city moron";
+        System.out.println("what city");
+        response = temp.nextLine();
+        Thread task = new Thread(weather);
+        task.start();
+        int index = 0;
+        while (task.getState()==Thread.State.RUNNABLE) {
+            System.out.println("Gimme a sec (runtime "+index+" seconds)");
+            index++;
+            TimeUnit.SECONDS.sleep(1);
+
         }
     }
 
