@@ -1,3 +1,11 @@
+// Weather (and other stuff) Chatbot
+// by Nate Bingenheimer and Jeffery Ji
+// Interacts via text input with the user, doing useful tasks including
+// - Getting the weather at a location
+// - Getting the date and time
+// - Generating a random integer
+// - Or giving a randomized response
+
 //Import statements
 import java.io.BufferedReader;
 import java.io.IOException;
