@@ -104,7 +104,7 @@ public class Main {
 
     // normal() chooses a random response from a predetermined list and returns it.
     public static String normal() {
-        String responses[] = {
+        String[] responses = {
                 "i don't know what youre talking about",
                 "i wasnt there, and if i was, i was asleep",
                 "i saw nothin'",
