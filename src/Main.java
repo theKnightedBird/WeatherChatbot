@@ -49,18 +49,24 @@ public class Main {
         String promptSanitized = clean(prompt);
         if (promptSanitized.contains("weather")) {
             weather();
+            if (!response.equals("time is relative") && prompt.contains("?")) { response += "?"; }
+
         } else if (prompt.startsWith("random(") && prompt.contains(",") && prompt.endsWith(")")){
             response = rng(prompt);
+            if (!response.equals("time is relative") && prompt.contains("?")) { response += "?"; }
+
         } else if (promptSanitized.contains("bad") || promptSanitized.contains("hate") || promptSanitized.contains("stupid")){
             response = doxx();
+            if (!response.equals("time is relative") && prompt.contains("?")) { response += "?"; }
+
         } else if (promptSanitized.equals("stop") || promptSanitized.equals("kill yourself")) {
             throw new aSpectreIsHauntingEuropeTheSpectreOfCommunismAllThePowersOfOldEuropeHaveEnteredIntoAHolyAllianceToExorciseThisSpectrePopeAndTsarMetternichAndGuizotFrenchRadicalAndGermanPoliceSpy("this is intended behavior, pls sahu give good grade");
         } else if (promptSanitized.contains(" time ") || promptSanitized.startsWith("time ") || promptSanitized.endsWith(" time") || promptSanitized.equals("time")) {
             response = time();
         } else {
             response = normal();
+            if (!response.equals("time is relative") && prompt.contains("?")) { response += "?"; }
         }
-        if (!response.equals("time is relative") && prompt.contains("?")) { response += "?"; }
         System.out.println(response);
         System.out.println("what else you want? stop to stop");
     }
